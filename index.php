@@ -72,7 +72,7 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="login.php?page=login">Register/Login</a></li>
                     <?php }else{ ?>
 
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost/event/dashboard.php">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="dashboard.php">Profile</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="logout.php">Logout</a></li>
                     <?php } ?>
                     </ul>

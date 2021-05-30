@@ -137,7 +137,7 @@ foreach($qry->fetch_array() as $k => $val){
 						<hr class="divider" style="max-width: calc(100%);"/>
 						<div class="text-center">
 							<?php if(isset($_SESSION['auth'])){ ?>
-									<a href="" class="btn btn-primary" id="register">Register Event Now</a>
+									<a href="event_registration.php?id=<?= $_GET['id']?>" class="btn btn-primary" id="register">Register Event Now</a>
 		                    <?php }else{ ?>
 		                        <a href="login.php?page=login" class="btn btn-primary" id="register" >Login To Register Event</a>
 		                    <?php } ?>

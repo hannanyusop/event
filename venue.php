@@ -61,7 +61,7 @@ header.masthead,header.masthead:before {
                 <?php
                 $rtl ='rtl';
                 $ci= 0;
-                $venue = $conn->query("SELECT * from events");
+                $venue = $conn->query("SELECT * from events WHERE type!=2");
                 while($row = $venue->fetch_assoc()){
                    
                     $ci++;

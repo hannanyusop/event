@@ -8,6 +8,10 @@ if($rslt->num_rows>0){
         $systemName = $row["name"];
     }
 }
+
+$student_id = $_SESSION['auth']['id'] = 4;
+$audiences = $conn->query("SELECT * FROM audience WHERE student_id=$student_id");
+$count = 1;
 ?>
 <html>
     <head>
@@ -79,56 +83,53 @@ if($rslt->num_rows>0){
                                     <th width="5%">Bil</th>
                                     <th width="25%">Venue</th>
                                     <th width="25%">Date</th>
-                                    <th width="25%">Status</th>
+                                    <th width="25%">Payment Status</th>
+                                    <th width="25%">Approval Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            <?php while ($data = $audiences->fetch_assoc()){?>
+
                                 <?php
-                                $i = 0;
-                                $venue = "SELECT *, a.id AS venid FROM venue_booking AS a INNER JOIN venue AS b ON a.venue_id = b.id";
-                                $vrslt = $conn->query($venue);
-                                if($vrslt->num_rows>0){
-                                    while($vrow = $vrslt->fetch_assoc()){
-                                        $i++;
-                                        $id = $vrow["id"];
-                                        $venId = $vrow["venid"];
-                                        $location = $vrow["venue"];
-                                        $duration = date('d/m/Y', strtotime($vrow["date"]));
-                                        $stat = $vrow["status"];
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $i ?></td>
-                                            <td><?php echo $location ?></td>
-                                            <td><?php echo $duration ?></td>
-                                            <td>
-                                                <?php
-                                                if($stat = 1){
-                                                    ?>
-                                                    <p style="color: green;">Confirmed</p> 
-                                                    <?php
-                                                }
-                                                else if($stat = 2){
-                                                    ?>
-                                                    <p style="color: red;">Canceled </p>
-                                                    <?php
-                                                }
-                                                else{
-                                                    ?>
-                                                    Pending
-                                                    <?php
-                                                }
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <!-- <a href="updateEvent.php?id=<?php echo $id ?>" class="btn btn-primary">Update</a> -->
-                                                <a href="deleteProcess.php?id=<?php echo $venId ?>" class="btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
-                                }
+                                $event_q = $conn->query("SELECT * FROM events WHERE id='$data[event_id]'");
+                                $event   = $event_q->fetch_assoc();
                                 ?>
+                                <tr>
+                                    <td><?= $count ?></td>
+                                    <td><?= $event['event']?></td>
+                                    <td><?= $event['schedule'] ?></td>
+                                    <td>
+                                        <?php if($event['payment_type'] == 2){ ?>
+                                            <?php if($data['payment_status'] == 0){ ?>
+                                                <?= "<span class='badge badge-warning'>Unpaid</span>" ?>
+                                            <?php }else{ ?>
+                                                <?= "<span class='badge badge-success'>Paid</span>" ?>
+                                            <?php } ?>
+                                        <?php }else{ ?>
+                                            -
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($data['status'] == 0){ ?>
+                                            <?= "<span class='badge badge-warning'>Pending</span>" ?>
+                                        <?php }else if($data['status'] == 1){ ?>
+                                            <?= "<span class='badge badge-warning'>Approved</span>" ?>
+                                        <?php }else{ ?>
+                                            <?= "<span class='badge badge-success'>Rejected</span>" ?>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($event['payment_type'] == 2){ ?>
+                                            <?php if($data['payment_status'] == 0){ ?>
+                                                <a target="_blank" href="<?= $data['receipt'] ?>" class='btn btn-warning'>Make Payment</a>
+                                            <?php }else{ ?>
+                                                <a target="_blank" href="<?= $data['receipt'] ?>" class='btn btn-info'>View Receipt</a>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                            <?php $count++; } ?>
                             </tbody>
                         </table>
                     </div>
