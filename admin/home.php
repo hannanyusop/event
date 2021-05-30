@@ -1,29 +1,18 @@
 <?php 
 include 'db_connect.php';
 
-$sql = "SELECT COUNT(*) AS totalStudent FROM students";
-$rslt = $conn->query($sql);
-if($rslt->num_rows>0){
-  while($row = $rslt->fetch_assoc()){
-    $total = $row["totalStudent"];
-  }
-}
+    $sql = "SELECT * FROM students";
+    $rslt = $conn->query($sql);
+    $total = $rslt->num_rows;
 
-$req = "SELECT COUNT(*) AS totalRequest FROM venue_booking WHERE status = '0'";
-$rrslt = $conn->query($req);
-if($rrslt->num_rows>0){
-  while($rrow = $rrslt->fetch_assoc()){
-    $totalreq = $rrow["totalRequest"];
-  }
-}
+    $req = "SELECT COUNT(*) AS totalRequest FROM audience WHERE status = '0'";
+    $rrslt = $conn->query($req);
+    $totalreq = $rrslt->num_rows;
 
-$event = "SELECT COUNT(*) AS totalEvent FROM venue_booking WHERE status = '1'";
-$erslt = $conn->query($event);
-if($erslt->num_rows>0){
-  while($erow = $erslt->fetch_assoc()){
-    $totalevent = $erow["totalEvent"];
-  }
-}
+
+    $event = "SELECT * FROM events";
+    $erslt = $conn->query($event);
+    $totalevent = $erslt->num_rows;
 ?>
 <style>
    span.float-right.summary_icon {

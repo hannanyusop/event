@@ -415,4 +415,21 @@ Class Action {
 			return 1;
 		}
 	}
+
+    function audience_confirm(){
+        extract($_POST);
+        $update = $this->db->query("UPDATE audience SET status=1 where id = ".$id);
+        if($update){
+            return 1;
+        }
+    }
+    function audience_reject(){
+        extract($_POST);
+        $update = $this->db->query("UPDATE audience SET status=2 where id = ".$id);
+        if($update){
+            return 1;
+        }
+    }
+
+
 }

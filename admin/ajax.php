@@ -130,3 +130,15 @@ if($action == "get_pdetails"){
 	if($get)
 		echo $get;
 }
+
+if($action == "audience_confirm"){
+    $save = $crud->audience_confirm();
+    if($save)
+        echo $save;
+}
+
+if($action == "audience_reject"){
+    $save = $crud->audience_reject();
+    if($save)
+        echo $save;
+}

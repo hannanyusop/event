@@ -78,11 +78,19 @@
 										 <?php endif; ?>
 									</td>
 									<td class="text-center">
-										<button class="btn btn-sm btn-outline-primary edit_register" type="button" data-id="<?php echo $row['id'] ?>" >Edit</button>
-										<?php if(in_array($row['status'],array(0,2))): ?>
-										<button class="btn btn-sm btn-outline-danger delete_register" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
-										 <?php endif; ?>
-									</td>
+
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <?php if(in_array($row['status'],array(0))): ?>
+                                                <button class="btn btn-sm btn-success audience_confirm" type="button" data-id="<?php echo $row['id'] ?>" >Confirm</button>
+                                                <button class="btn btn-sm btn-warning audience_reject" type="button" data-id="<?php echo $row['id'] ?>" >Reject</button>
+                                            <?php endif; ?>
+                                            <!--										<button class="btn btn-sm btn-outline-primary edit_register" type="button" data-id="--><?php //echo $row['id'] ?><!--" >Edit</button>-->
+                                            <?php if(in_array($row['status'],array(0,2))): ?>
+                                                <button class="btn btn-sm btn-danger delete_register" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
+                                            <?php endif; ?>
+                                        </div>
+
+                                    </td>
 								</tr>
 								<?php endwhile; ?>
 							</tbody>
@@ -120,6 +128,51 @@
 		uni_modal("Manage register Details","manage_register.php?id="+$(this).attr('data-id'))
 		
 	})
+
+    $('.audience_confirm').click(function(){
+        _conf("Are you sure to approve this audience?","audience_confirm",[$(this).attr('data-id')])
+    })
+
+    function audience_confirm($id){
+        start_load()
+        $.ajax({
+            url:'ajax.php?action=audience_confirm',
+            method:'POST',
+            data:{id:$id},
+            success:function(resp){
+                if(resp==1){
+                    alert_toast("Audience approved!",'success')
+                    setTimeout(function(){
+                        location.reload()
+                    },1500)
+
+                }
+            }
+        })
+    }
+
+    $('.audience_reject').click(function(){
+        _conf("Are you sure to decline this audience?","audience_reject",[$(this).attr('data-id')])
+    })
+
+    function audience_reject($id){
+        start_load()
+        $.ajax({
+            url:'ajax.php?action=audience_reject',
+            method:'POST',
+            data:{id:$id},
+            success:function(resp){
+                if(resp==1){
+                    alert_toast("Audience rejected!",'success')
+                    setTimeout(function(){
+                        location.reload()
+                    },1500)
+
+                }
+            }
+        })
+    }
+
 	$('.delete_register').click(function(){
 		_conf("Are you sure to delete this Person?","delete_register",[$(this).attr('data-id')])
 	})
